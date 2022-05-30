@@ -5,4 +5,8 @@
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="if exist $(SolutionDir)..\Poly.ArcEcs.Unity\ArcEcs.Unity\Runtime\Collections\ copy $(ProjectDir)*.cs $(SolutionDir)..\Poly.ArcEcs.Unity\ArcEcs.Unity\Runtime\Collections\ /y" />
+	</Target>
+
 </Project>

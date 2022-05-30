@@ -8,6 +8,7 @@ namespace Poly.Collections
     {
         int Length { get; }
         int Capacity { get; }
+        bool IsCreated { get; }
         //object this[int index] { get; set; }
     }
     //public interface IFastArray<T> : IFastArray where T : struct
@@ -41,6 +42,7 @@ namespace Poly.Collections
                 length = value;
             }
         }
+        public bool IsCreated => items != null;
 
         public T this[int index]
         {
@@ -58,10 +60,10 @@ namespace Poly.Collections
             }
         }
 
-        public FastArray(int length)
+        public FastArray(int capacity)
         {
-            items = ArrayPool<T>.Shared.Rent(length);
-            this.length = length;
+            items = ArrayPool<T>.Shared.Rent(capacity);
+            this.length = 0;
         }
         public FastArray(FastArray<T> array)
         {
@@ -71,6 +73,7 @@ namespace Poly.Collections
         }
         public void Dispose()
         {
+            if (items == null) return;
             ArrayPool<T>.Shared.Return(items);
             items = null;
             length = 0;

@@ -8,6 +8,7 @@ This package provides unmanaged data structures that can be used in struct based
 - Minimal core (< 1000 lines)
 - Lightweight and fast
 - Collections for Ecs
+- ArrayPool support like System.Buffers.ArrayPool
 - Adapted to all C# game engine
 
 ## Installation
@@ -42,6 +43,7 @@ The software is released under the terms of the [MIT license](./LICENSE.md).
 ### Documents
 - [Unity Collections package](https://docs.unity3d.com/Packages/com.unity.collections@1.2/manual/index.html)
 - [NativeArray<T0>](https://docs.unity3d.com/ScriptReference/Unity.Collections.NativeArray_1.html)
+- [ArrayPool<T> Class](https://docs.microsoft.com/en-us/dotnet/api/system.buffers.arraypool-1?view=net-6.0)
 
 ### Projects
 

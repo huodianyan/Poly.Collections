@@ -41,9 +41,9 @@ namespace Poly.Collections.Tests
         {
             var array = new FastArray<TestStruct>(3);
             Assert.AreEqual(4, array.Capacity);
-            Assert.AreEqual(3, array.Length);
             array[2] = new TestStruct { Value = 13 };
             Assert.AreEqual(13, array[2].Value);
+            Assert.AreEqual(3, array.Length);
 
             array.Length = 5;
             Assert.AreEqual(8, array.Capacity);
