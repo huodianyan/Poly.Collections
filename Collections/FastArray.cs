@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Poly.Collections
 {
-    public interface IFastArray : IDisposable
+    public interface IFastArray : IDisposable, IEnumerable
     {
         int Length { get; }
         int Capacity { get; }
@@ -16,7 +18,7 @@ namespace Poly.Collections
     //    new T this[int index] { get; set; }
     //}
     //public struct FastArray<T> : IFastArray<T> where T : struct// : IEnumerable<T>
-    public struct FastArray<T> : IFastArray// where T : struct// : IEnumerable<T>
+    public struct FastArray<T> : IFastArray, IEnumerable<T>// where T : struct// : IEnumerable<T>
     {
         private T[] items;
         private int length;
@@ -88,23 +90,32 @@ namespace Poly.Collections
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref T ElementAt(int index) => ref items[index];
-        public ArrayEnumerator<T> GetEnumerator() => new ArrayEnumerator<T>(items, 0, length);
+        public Enumerator GetEnumerator() => new Enumerator(items, 0, length);
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         //public static implicit operator T[](FastArray<T> fastArray) => fastArray.items;
-    }
-    public struct ArrayEnumerator<T> : IDisposable //IEnumerator<T>
-    {
-        private readonly T[] array;
-        private readonly int length;
-        private volatile int index;
-        public ArrayEnumerator(T[] array, int offset, int length)
+        public struct Enumerator : IEnumerator<T>
         {
-            this.array = array;
-            this.length = length;
-            index = offset - 1;
+            private readonly T[] array;
+            private readonly int length;
+            private readonly int offset;
+            private volatile int index;
+            public T Current => array[index];
+            object IEnumerator.Current => array[index];
+
+            public Enumerator(T[] array, int offset, int length)
+            {
+                this.array = array;
+                this.length = length;
+                this.offset = offset;
+                index = offset - 1;
+            }
+            public void Dispose() { }
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool MoveNext() => ++index < length;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void Reset() => index = offset - 1;
         }
-        public T Current => array[index];
-        public bool MoveNext() => ++index < length;
-        public void Dispose() { }
     }
 }

@@ -54,11 +54,47 @@ namespace Poly.Collections.Tests
             item.Value = 23;
             Assert.AreEqual(23, array[4].Value);
 
+            //foreach(var item1 in array)
+            //{
+            //    Console.WriteLine($"FastArrayTest.Enumerator: {item1.Value}");//, {string.Join(",", array)}
+            //}
+            Console.WriteLine($"FastArrayTest: array: {string.Join(",", array)}");//, 
+
             array.Dispose();
+        }
+        [TestMethod]
+        public void FastListTest()
+        {
+            var list = new FastList<TestStruct>(3);
+            Assert.AreEqual(4, list.Capacity);
+            list[2] = new TestStruct { Value = 13 };
+            Assert.AreEqual(13, list[2].Value);
+            Assert.AreEqual(3, list.Length);
+
+            list.Length = 5;
+            Assert.AreEqual(8, list.Capacity);
+            Assert.AreEqual(5, list.Length);
+            Assert.AreEqual(13, list[2].Value);
+
+            ref var item = ref list.ElementAt(4);
+            item.Value = 23;
+            Assert.AreEqual(23, list[4].Value);
+
+            //foreach (var item1 in list)
+            //{
+            //    Console.WriteLine($"FastArrayTest.Enumerator: {item1.Value}");//, {string.Join(",", array)}
+            //}
+            Console.WriteLine($"FastArrayTest: array: {string.Join(",", list)}");//, 
+
+            list.Dispose();
         }
     }
     public struct TestStruct
     {
         public int Value;
+        public override string ToString()
+        {
+            return $"TestStruct:{{{Value}}}";
+        }
     }
 }
